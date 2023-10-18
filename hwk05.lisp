@@ -1227,8 +1227,7 @@ Use "Property A4" to prove the equivalence and conclude that the two expressions
     (& 0)))
     
 (check= (size '(a v (b !v (c <> d)))) 7)
-(check= (size '()) 1)#|ACL2s-ToDo-Line|#
-
+(check= (size '()) 1)
 
 
 ; Finally define a function to determine the depth of a BoolFm. If you
@@ -1236,11 +1235,20 @@ Use "Property A4" to prove the equivalence and conclude that the two expressions
 ; corresponds to the depth of the circuit or the length of the longest
 ; path in the circuit, i.e., how many gates you have to go through.
 
+;(definec Depth (p :BoolFm) :nat
+ ; XXX)
+
 (definec Depth (p :BoolFm) :nat
-  XXX)
+  (match p
+    ((q & r) (+ 1 (max (Depth q) (Depth r))))
+    (:bool 0)
+    (:var 0)
+    (('! q)  (+ 1 (Depth q)))
+    (& 0)))
 
 (check= (depth nil) 0)
-(check= (depth '((a v b) <> ((! c) !^ (! d)))) 3)
+(check= (depth '((a v b) <> ((! c) !^ (! d)))) 3)#|ACL2s-ToDo-Line|#
+
 
 ; EXTRA CREDIT 
 ;
